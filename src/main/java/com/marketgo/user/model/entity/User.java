@@ -1,7 +1,6 @@
 package com.marketgo.user.model.entity;
 
 import com.marketgo.common.entity.BaseEntity;
-import com.marketgo.common.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,11 +19,18 @@ public class User extends BaseEntity {
     private String email;
 
     private String password;
-    private String phone;
-    private  Boolean is_verified;
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    private String phone;
+
+    private  boolean is_verified = false;
+
+    public enum Role {
+        admin, buyer, seller, runner
+    }
+
 }
 
 

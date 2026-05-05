@@ -1,10 +1,10 @@
 package com.marketgo.user.model.entity;
 
 import com.marketgo.common.entity.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
@@ -15,13 +15,16 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Address extends BaseEntity {
-    private UUID userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name= "user_id")
+    private User user;
 
     private String label;
+
     private String street;
     private String city;
     private String state;
 
-    private Double lat;
-    private Double lng;
+    private BigDecimal lat;
+    private BigDecimal lon;
 }

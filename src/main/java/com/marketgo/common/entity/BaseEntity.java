@@ -16,18 +16,17 @@ public abstract class BaseEntity{
     protected UUID id;
 
     @Column(updatable = false)
-    protected  LocalDateTime created_at;
+    protected  LocalDateTime createdAt;
 
-    protected LocalDateTime updated_at;
+    protected LocalDateTime updatedAt;
 
     @PrePersist
-     void oncreate(){
-        created_at = LocalDateTime.now();
-        updated_at = LocalDateTime.now();
+     void onCreate(){
+        createdAt = LocalDateTime.now();
     }
 
     @PreUpdate
-    void onupdate(){
-        updated_at = LocalDateTime.now();
+    void onUpdate(){
+        updatedAt = LocalDateTime.now();
     }
-};
+}
