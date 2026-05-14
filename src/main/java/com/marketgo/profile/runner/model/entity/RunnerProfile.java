@@ -3,28 +3,51 @@ package com.marketgo.profile.runner.model.entity;
 import com.marketgo.common.entity.BaseEntity;
 import com.marketgo.user.model.entity.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+
 
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "runner_profiles")
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
+@Table(name = "runner_profiles",
+        indexes = {
+                @Index(name = "idx_runner_location", columnList = "current_lat, current_lon")
+        }
+)
+@Getter
+@Setter
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 public class RunnerProfile extends BaseEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
-    private String vehicleType;
-    private boolean isAvailable = false;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "vehicle_type")
+    private VehicleType vehicleType;
 
+    @Column(name = "is_available")
+    private boolean available = false;
+
+    @Column(name = "current_lat")
     private BigDecimal currentLat;
-    private BigDecimal currentLng;
+
+    @Column(name = "current_lon")
+    private BigDecimal currentLon;
+
+
     private BigDecimal rating;
+
+
+    public enum VehicleType {
+        BIKE,
+        CAR,
+        TRICYCLE,
+        WALKER
+    }
 
 }

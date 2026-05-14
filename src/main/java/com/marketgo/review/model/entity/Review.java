@@ -10,29 +10,40 @@ import lombok.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "reviews")
+@Table(name = "reviews",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        columnNames = {"order_id", "reviewer_id", "target_type"}
+                )
+        },
+        indexes = {
+                @Index(name = "idx_review_target", columnList = "target_id"),
+                @Index(name = "idx_review_order", columnList = "order_id")
+        })
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
 public class Review extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reviewer_id")
+    @JoinColumn(name = "reviewer_id", nullable = false)
     private User reviewer;
 
     @Enumerated(EnumType.STRING)
     private TargetType targetType;
 
-    private UUID targetId; // polymorphic - points to seller, runner, or product
+    private UUID targetId;
 
-    @Column(columnDefinition = "tinyint")
-    private Integer rating; // 1-5
+    @Column(nullable = false)
+    private Integer rating;
 
     @Column(columnDefinition = "text")
     private String comment;
 
-    public enum TargetType { seller, runner, product }
+    public enum TargetType {
+        seller, runner, product
+    }
 }

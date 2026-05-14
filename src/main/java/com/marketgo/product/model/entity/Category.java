@@ -6,16 +6,19 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "categories")
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
+@Table(
+        name = "categories",
+        indexes = {
+                @Index(name = "idx_category_parent", columnList = "parent_id")
+        }
+)
 public class Category extends BaseEntity {
 
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id", nullable = true)
-    private Category parent; // self-referencing for subcategories
+    private Category parent;
 
     private String iconUrl;
 }

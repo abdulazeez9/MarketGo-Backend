@@ -8,7 +8,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "product_request")
+@Table(name = "product_request", indexes = {
+        @Index(name="idx_product_request_buyer", columnList="buyer_id")
+})
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
 public class ProductRequest extends BaseEntity {

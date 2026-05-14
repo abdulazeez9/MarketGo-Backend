@@ -3,13 +3,14 @@ package com.marketgo.user.model.entity;
 import com.marketgo.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 
 @Entity
 @Table(name = "users")
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 public class User extends BaseEntity {
@@ -25,10 +26,11 @@ public class User extends BaseEntity {
 
     private String phone;
 
-    private  boolean is_verified = false;
+    @Column(name = "is_verified")
+    private boolean verified = false;
 
     public enum Role {
-        admin, buyer, seller, runner
+        ADMIN, BUYER, SELLER, RUNNER
     }
 
 }
