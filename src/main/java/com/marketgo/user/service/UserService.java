@@ -1,15 +1,55 @@
 package com.marketgo.user.service;
 
-import com.marketgo.user.model.dto.LoginRequest;
-import com.marketgo.user.model.dto.RegisterRequest;
-import com.marketgo.user.model.dto.LoginResponse;
 
-import java.util.List;
+import com.marketgo.exception.AppException;
+import com.marketgo.user.mapper.UserMapper;
+import com.marketgo.user.model.dto.request.UpdateProfileRequest;
+import com.marketgo.user.model.dto.response.UserResponse;
+import com.marketgo.user.model.entity.User;
+import com.marketgo.user.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
-public interface UserService {
-    LoginResponse register(RegisterRequest createUserRequest);
+import java.time.LocalDateTime;
+import java.util.UUID;
 
-    LoginResponse login(LoginRequest loginRequest);
 
-    List<LoginResponse> getAllUsers();
+@Service
+@RequiredArgsConstructor
+public class UserService {
+
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
+
+    // Get current user profile
+    public UserResponse getById(String userId) {
+        User user = findActiveUserById(userId);
+        return userMapper.toUserResponse(user);
+    }
+
+    // Update profile
+    public UserResponse updateProfile(String userId, UpdateProfileRequest request) {
+        User user = findActiveUserById(userId);
+        if (request.name() != null) user.setName(request.name());
+        if (request.phone() != null) user.setPhone(request.phone());
+
+        User updated = userRepository.save(user);
+        return userMapper.toUserResponse(updated);
+    }
+
+    ;
+
+    //Soft delete
+    public void softDelete(String userId) {
+        User user = findActiveUserById(userId);
+        user.setDeletedAt(LocalDateTime.now());
+        userRepository.save(user);
+    };
+
+
+    // Private method to find userID
+    private User findActiveUserById(String userId) {
+        return userRepository.findByIdAndDeletedAtIsNull(UUID.fromString(userId)).orElseThrow(() -> AppException.notFound("User not found"));
+    }
+
 }

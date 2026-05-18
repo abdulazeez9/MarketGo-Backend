@@ -30,7 +30,7 @@ public class User extends BaseEntity {
     private boolean verified = false;
 
     public enum Role {
-        ADMIN, BUYER, SELLER, RUNNER
+        ADMIN, USER
     }
 
 }

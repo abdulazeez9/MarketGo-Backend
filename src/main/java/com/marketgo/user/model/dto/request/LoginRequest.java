@@ -1,4 +1,4 @@
-package com.marketgo.user.model.dto;
+package com.marketgo.user.model.dto.request;
 
 import jakarta.validation.constraints.*;
 

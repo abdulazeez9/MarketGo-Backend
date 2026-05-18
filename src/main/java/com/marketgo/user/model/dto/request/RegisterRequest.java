@@ -1,4 +1,4 @@
-package com.marketgo.user.model.dto;
+package com.marketgo.user.model.dto.request;
 
 import jakarta.validation.constraints.*;
 
@@ -22,6 +22,9 @@ public record RegisterRequest(
         String city,
 
         @NotBlank(message = "Enter your street address")
-        String street
+        String street,
+
+
+        String phone
 ) {
 }

@@ -1,31 +1,44 @@
 package com.marketgo.user.controller;
 
-import com.marketgo.user.model.entity.User;
+import com.marketgo.user.model.dto.request.UpdateProfileRequest;
+import com.marketgo.user.model.dto.response.UserResponse;
+import com.marketgo.user.service.UserService;
+import com.marketgo.utils.ApiResponse;
+import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/users")
+@RequiredArgsConstructor
 public class UserController {
 
-    private List<User> userDetails = new ArrayList<User>();
+    private final UserService userService;
 
-    @GetMapping("/users")
-    public List<User> getUsers() {
-        return userDetails;
+    @GetMapping("/me")
+    public ResponseEntity<ApiResponse<UserResponse>> getMe(Authentication auth) {
+        String userId = (String) auth.
+        UserResponse data = userService.getById(userId);
+        return ResponseEntity.ok(ApiResponse.success("Profile fetched", data));
     }
 
-    @PostMapping("/users")
-    public User createUser(@RequestBody User user) {
-        userDetails.add(user);
-        return user ;
+    // PATCH /api/users/me
+    @PatchMapping("/me")
+    public ResponseEntity<ApiResponse<UserResponse>> updateMe(
+            Authentication auth,
+            @RequestBody UpdateProfileRequest request
+    ) {
+        String userId = (String) auth.getPrincipal();
+        UserResponse data = userService.updateProfile(userId, request);
+        return ResponseEntity.ok(ApiResponse.success("Profile updated", data));
     }
 
-    @GetMapping("/users/{id}")
-    public User getUserById(@PathVariable int id) {
-        return userDetails.get(id);
+    // DELETE /api/users/me — soft delete
+    @DeleteMapping("/me")
+    public ResponseEntity<ApiResponse<Void>> deleteMe(Authentication auth) {
+        String userId = (String) auth.getPrincipal();
+        userService.softDelete(userId);
+        return ResponseEntity.ok(ApiResponse.success("Account deleted"));
     }
-
 }
