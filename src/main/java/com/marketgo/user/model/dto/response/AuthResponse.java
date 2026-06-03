@@ -5,10 +5,10 @@ import java.util.UUID;
 
 public record AuthResponse(
         UUID id,
-        String token,
         String name,
         String email,
-        String role
+        String role,
+        String token
 
 ) {
 }

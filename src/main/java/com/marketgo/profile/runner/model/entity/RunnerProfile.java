@@ -31,6 +31,7 @@ public class RunnerProfile extends BaseEntity {
     private VehicleType vehicleType;
 
     @Column(name = "is_available")
+    @Builder.Default
     private boolean available = false;
 
     @Column(name = "current_lat")

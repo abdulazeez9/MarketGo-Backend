@@ -32,15 +32,18 @@ spring:
       max-file-size: 10MB
       max-request-size: 10MB
 
-# ── JWT ────────────────────────────────────────────────────────────────────────
+# ── JWT ───
 app:
   jwt:
-    secret: YOUR_BASE64_ENCODED_SECRET_AT_LEAST_44_CHARS_LONG==
+    secret: 9nIuwtwzXN7WbbXCPTV0JB5gSMr7sNKliPQCv24t8vJzTxKJ96JwlhGmifxPwWTFkyjTZqRUTUBijfsx3gDsmw==
     expiration: 86400000
 
   # Frontend URL
   frontend-url: http://localhost:3000
-
+  admin:
+    name: Super Admin
+    email: admin@marketgo.com
+    password: changeme123
 # AWS S3
 aws:
   s3:
@@ -49,3 +52,4 @@ aws:
   credentials:
     access-key: YOUR_AWS_ACCESS_KEY
     secret-key: YOUR_AWS_SECRET_KEY
+

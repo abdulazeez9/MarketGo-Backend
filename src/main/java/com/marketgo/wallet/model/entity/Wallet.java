@@ -21,14 +21,17 @@ public class Wallet extends BaseEntity {
 
     @Column(precision = 19, scale = 2)
     @ColumnDefault("0")
+    @Builder.Default
     private BigDecimal balance = BigDecimal.ZERO;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 10)
+    @Builder.Default
     private Currency currency = Currency.NGN;
 
     @Column(name = "is_frozen")
     @ColumnDefault("false")
+    @Builder.Default
     private boolean isFrozen = false;
 
 

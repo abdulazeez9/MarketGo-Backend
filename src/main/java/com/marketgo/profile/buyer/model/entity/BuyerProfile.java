@@ -26,6 +26,7 @@ public class BuyerProfile extends BaseEntity {
 
 
     @Column(name = "is_mobility_limited")
+    @Builder.Default
     private boolean mobilityLimited = false;
 
 

@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -44,7 +45,15 @@ public class UserService {
         User user = findActiveUserById(userId);
         user.setDeletedAt(LocalDateTime.now());
         userRepository.save(user);
-    };
+    }
+
+    ;
+
+
+    // Get all users (Admin)
+    public List<UserResponse> getAllUsers() {
+        return userRepository.findAll().stream().map(userMapper::toUserResponse).toList();
+    }
 
 
     // Private method to find userID

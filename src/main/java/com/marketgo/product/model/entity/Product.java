@@ -41,8 +41,9 @@ public class Product extends BaseEntity {
     private BigDecimal price;
 
     @Column(nullable=false)
+    @Builder.Default
     private Integer stockQty = 0;
 
-
+    @Builder.Default
     private boolean isAvailable = true;
 }

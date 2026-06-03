@@ -48,28 +48,17 @@ public class AuthService {
                 .verified(false)
                 .build();
 
+        // Saved User
         User saved = userRepository.save(user);
 
         // Auto create buyer profile
-        BuyerProfile buyerProfile = buyerRepository.save(
-                BuyerProfile.builder()
-                        .user(user)
-                        .build()
-        );
+        buyerRepository.save(BuyerProfile.builder().user(saved).build());
 
         // Auto create wallet
-        Wallet wallet = walletRepository.save(
-                Wallet.builder()
-                        .user(user)
-                        .balance(BigDecimal.ZERO)
-                        .build()
-        );
+        walletRepository.save(Wallet.builder().user(saved).balance(BigDecimal.ZERO).build());
 
-        String token = jwtUtil.generateToken(
-                saved.getId().toString(),
-                saved.getEmail(),
-                saved.getRole().name()
-        );
+        // Token
+        String token = jwtUtil.generateToken(saved.getId().toString(), saved.getEmail(), saved.getRole().name());
 
         return userMapper.toAuthResponse(saved, token);
     }

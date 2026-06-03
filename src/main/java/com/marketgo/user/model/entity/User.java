@@ -27,6 +27,7 @@ public class User extends BaseEntity {
     private String phone;
 
     @Column(name = "is_verified")
+    @Builder.Default
     private boolean verified = false;
 
     public enum Role {

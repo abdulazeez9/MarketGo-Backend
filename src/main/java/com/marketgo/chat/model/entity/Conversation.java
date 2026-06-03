@@ -36,11 +36,13 @@ public class Conversation extends BaseEntity {
     @OneToMany(mappedBy = "conversation",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
+    @Builder.Default
     private List<ConversationParticipant> participants = new ArrayList<>();
 
     @OneToMany(mappedBy = "conversation",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
+    @Builder.Default
     private List<Message> messages = new ArrayList<>();
 
     public enum ConversationType {

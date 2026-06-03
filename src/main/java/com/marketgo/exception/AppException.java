@@ -1,14 +1,16 @@
 package com.marketgo.exception;
 
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+@Getter
 public class AppException extends RuntimeException {
 
-    private final HttpStatus httpStatus;
+    private final HttpStatus status;
 
-    public AppException(String message, HttpStatus httpStatus) {
+    public AppException(String message, HttpStatus status) {
         super(message);
-        this.httpStatus = httpStatus;
+        this.status = status;
     }
 
 

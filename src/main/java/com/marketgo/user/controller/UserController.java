@@ -5,8 +5,8 @@ import com.marketgo.user.model.dto.response.UserResponse;
 import com.marketgo.user.service.UserService;
 import com.marketgo.utils.ApiResponse;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,7 +18,7 @@ public class UserController {
 
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<UserResponse>> getMe(Authentication auth) {
-        String userId = (String) auth.
+        String userId = (String) auth.getPrincipal();
         UserResponse data = userService.getById(userId);
         return ResponseEntity.ok(ApiResponse.success("Profile fetched", data));
     }
