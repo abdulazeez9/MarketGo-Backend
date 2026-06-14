@@ -30,6 +30,7 @@ public class User extends BaseEntity {
     @Builder.Default
     private boolean verified = false;
 
+
     public enum Role {
         ADMIN, USER
     }

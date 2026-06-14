@@ -52,9 +52,10 @@ public class UserService {
 
     // Get all users (Admin)
     public List<UserResponse> getAllUsers() {
-        return userRepository.findAll().stream().map(userMapper::toUserResponse).toList();
+        return userRepository.findAllByDeletedAtIsNull().stream()
+                .map(userMapper::toUserResponse)
+                .toList();
     }
-
 
     // Private method to find userID
     private User findActiveUserById(String userId) {

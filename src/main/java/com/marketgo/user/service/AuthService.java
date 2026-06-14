@@ -8,11 +8,13 @@ import com.marketgo.user.mapper.UserMapper;
 import com.marketgo.user.model.dto.response.AuthResponse;
 import com.marketgo.user.model.dto.request.LoginRequest;
 import com.marketgo.user.model.dto.request.RegisterRequest;
+import com.marketgo.user.model.dto.response.UserResponse;
 import com.marketgo.user.model.entity.User;
 import com.marketgo.user.repository.UserRepository;
 import com.marketgo.utils.JwtUtil;
 import com.marketgo.wallet.model.entity.Wallet;
 import com.marketgo.wallet.repository.WalletRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,13 +32,14 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     private final UserMapper userMapper;
-
+    private final TokenBlacklistService tokenBlacklistService;
 
     // ========REGISTER USERS ==========
-    public AuthResponse register(RegisterRequest request) {
+    @Transactional
+    public UserResponse register(RegisterRequest request) {
 
         if (userRepository.existsByEmail(request.email())) {
-            throw AppException.badRequest("Email already in use");
+            throw AppException.badRequest("Email already in use!");
         }
 
         User user = User.builder()
@@ -57,10 +60,8 @@ public class AuthService {
         // Auto create wallet
         walletRepository.save(Wallet.builder().user(saved).balance(BigDecimal.ZERO).build());
 
-        // Token
-        String token = jwtUtil.generateToken(saved.getId().toString(), saved.getEmail(), saved.getRole().name());
 
-        return userMapper.toAuthResponse(saved, token);
+        return userMapper.toUserResponse(saved);
     }
 
 
@@ -82,5 +83,22 @@ public class AuthService {
         );
 
         return userMapper.toAuthResponse(user, token);
+    }
+
+    // ========LOGOUT USER ==========
+    public void logout(String token) {
+        if (token == null || token.isBlank()) {
+            throw AppException.badRequest("Token is required for logout");
+        }
+
+        try {
+            // Get token expiration time remaining (in seconds)
+            long expirationTimeInSeconds = jwtUtil.getTimeUntilExpiration(token);
+
+            // Add token to blacklist with TTL matching expiration
+            tokenBlacklistService.blacklistToken(token, expirationTimeInSeconds);
+        } catch (Exception e) {
+            throw AppException.unauthorized("Invalid token");
+        }
     }
 }

@@ -4,16 +4,15 @@ package com.marketgo.user.controller;
 import com.marketgo.user.model.dto.response.AuthResponse;
 import com.marketgo.user.model.dto.request.LoginRequest;
 import com.marketgo.user.model.dto.request.RegisterRequest;
+import com.marketgo.user.model.dto.response.UserResponse;
 import com.marketgo.user.service.AuthService;
 import com.marketgo.utils.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -24,11 +23,11 @@ public class AuthController {
 
     // POST  /api/auth/register
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse<AuthResponse>> register(
+    public ResponseEntity<ApiResponse<UserResponse>> register(
             @Valid @RequestBody RegisterRequest request
     ) {
 
-        AuthResponse data = authService.register(request);
+        UserResponse data = authService.register(request);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(ApiResponse.success("Account created successfully", data));
@@ -40,4 +39,19 @@ public class AuthController {
         return ResponseEntity.ok(ApiResponse.success("Account login successfully", data));
     }
 
-}
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(@RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
+        // Extract token from "Bearer <token>" header
+        String token = extractTokenFromHeader(authHeader);
+        authService.logout(token);
+        return ResponseEntity.ok("Successfully logged out");
+    }
+
+    private String extractTokenFromHeader(String authHeader) {
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            return authHeader.substring(7);
+        }
+        throw new IllegalArgumentException("Invalid authorization header");
+    }
+};

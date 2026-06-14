@@ -22,9 +22,7 @@ public class JwtUtil {
 
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(secret.getBytes());
-    }
-
-    ;
+    };
 
     public String generateToken(String userId, String email, String role) {
         return Jwts.builder()
@@ -36,6 +34,25 @@ public class JwtUtil {
                 .signWith(getSigningKey())
                 .compact();
     }
+
+    public long getTimeUntilExpiration(String token) {
+        try {
+            Claims claims = extractAllClaims(token);
+            Date expirationDate = claims.getExpiration();
+            Date now = new Date();
+
+            if (expirationDate.before(now)) {
+                throw new RuntimeException("Token has already expired");
+            }
+
+            long remainingMillis = expirationDate.getTime() - now.getTime();
+            return remainingMillis / 1000;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to extract expiration time from token", e);
+        }
+    }
+
+
 
     public Claims extractAllClaims(String token) {
         return Jwts.parser()

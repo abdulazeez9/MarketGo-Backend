@@ -5,7 +5,11 @@ spring:
     url: jdbc:postgresql://localhost:5432/marketgo
     username: marketgo_user
     password: asadoye5050
-
+  devtools:
+    restart:
+      enabled: true
+      poll-interval: 1000
+      quiet-period: 400
   jpa:
     hibernate:
       ddl-auto: update
@@ -14,6 +18,12 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 2000
+
 
   mail:
     host: smtp.gmail.com
