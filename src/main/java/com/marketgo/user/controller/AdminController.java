@@ -22,7 +22,9 @@ public class AdminController {
     public ResponseEntity<ApiResponse<List<UserResponse>>> getUsers() {
         List<UserResponse> data = userService.getAllUsers();
         return ResponseEntity.ok(ApiResponse.success("Users fetched", data));
-    };
+    }
+
+    ;
 
     @GetMapping("/users/{id}")
     public ResponseEntity<ApiResponse<UserResponse>> getUserById(@PathVariable String id) {
@@ -31,9 +33,13 @@ public class AdminController {
     }
 
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable String id) {
+    public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable String id, Authentication auth) {
+        String adminId = (String) auth.getPrincipal();
+        if (adminId.equals(id)) {
+            return ResponseEntity.badRequest().body(ApiResponse.error("Admin cannot delete their own account"));
+        }
         userService.softDelete(id);
-        return ResponseEntity.ok(ApiResponse.success("Account deleted"));
+        return ResponseEntity.ok(ApiResponse.success("Account deleted successfully"));
     }
 
 }

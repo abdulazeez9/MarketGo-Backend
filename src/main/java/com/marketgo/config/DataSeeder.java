@@ -13,15 +13,18 @@ public class DataSeeder implements CommandLineRunner {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AdminProperties adminProperties;
+
+
 
     @Override
     public void run(String... args) {
-        if (userRepository.existsByEmail("admin@marketgo.com")) return;
+        if (userRepository.existsByEmail(adminProperties.getEmail())) return;
 
         userRepository.save(User.builder()
-                .name("Super Admin")
-                .email("admin@marketgo.com")
-                .password(passwordEncoder.encode("changeme123"))
+                .name(adminProperties.getName())
+                .email(adminProperties.getEmail())
+                .password(passwordEncoder.encode(adminProperties.getPassword()))
                 .role(User.Role.ADMIN)
                 .verified(true)
                 .build());

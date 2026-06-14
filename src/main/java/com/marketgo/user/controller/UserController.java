@@ -2,6 +2,7 @@ package com.marketgo.user.controller;
 
 import com.marketgo.user.model.dto.request.UpdateProfileRequest;
 import com.marketgo.user.model.dto.response.UserResponse;
+import com.marketgo.user.model.entity.User;
 import com.marketgo.user.service.UserService;
 import com.marketgo.utils.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +39,14 @@ public class UserController {
     @DeleteMapping("/me")
     public ResponseEntity<ApiResponse<Void>> deleteMe(Authentication auth) {
         String userId = (String) auth.getPrincipal();
+        if(auth.getPrincipal().equals("admin")) {
+
         userService.softDelete(userId);
+        }
+
         return ResponseEntity.ok(ApiResponse.success("Account deleted"));
     }
+
+
+
 }
