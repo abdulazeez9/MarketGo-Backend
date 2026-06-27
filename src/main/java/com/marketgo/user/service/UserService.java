@@ -59,9 +59,6 @@ public class UserService {
 
     ;
 
-
-
-
     // Private method to find userID
     private User findActiveUserById(String userId) {
         return userRepository.findByIdAndDeletedAtIsNull(UUID.fromString(userId)).orElseThrow(() -> AppException.notFound("User not found!"));

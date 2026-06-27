@@ -20,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 
 @Service
@@ -38,10 +39,29 @@ public class AuthService {
     @Transactional
     public UserResponse register(RegisterRequest request) {
 
-        if (userRepository.existsByEmail(request.email())) {
-            throw AppException.badRequest("Email already in use!");
+        Optional<User> existingUser = userRepository.findByEmail(request.email());
+        if (existingUser.isPresent()) {
+            User user = existingUser.get();
+
+            // Active account already exists
+            if (user.getDeletedAt() == null) {
+                throw AppException.badRequest("Email already exists");
+            }
+
+            // Restore deleted account
+            user.setDeletedAt(null);
+            user.setName(request.name());
+            user.setPhone(request.phone());
+            user.setPassword(passwordEncoder.encode(request.password()));
+            user.setVerified(false);
+
+            User restoredUser = userRepository.save(user);
+
+            return userMapper.toUserResponse(restoredUser);
+
         }
 
+         // Create brand-new account
         User user = User.builder()
                 .name(request.name())
                 .email(request.email())
