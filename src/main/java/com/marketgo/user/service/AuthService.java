@@ -69,11 +69,11 @@ public class AuthService {
     public AuthResponse login(LoginRequest request) {
 
         User user = userRepository.findByEmailAndDeletedAtIsNull(request.email())
-                .orElseThrow(() -> AppException.unauthorized("Invalid email or password"));
+                .orElseThrow(() -> AppException.unauthorized("Invalid email or password!"));
 
         boolean passwordMatches = passwordEncoder.matches(request.password(), user.getPassword());
         if (!passwordMatches) {
-            throw AppException.unauthorized("Invalid email or password");
+            throw AppException.unauthorized("Invalid password");
         }
 
         String token = jwtUtil.generateToken(

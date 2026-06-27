@@ -50,10 +50,12 @@ app:
 
   # Frontend URL
   frontend-url: http://localhost:3000
+
+  #Admin Credentials
   admin:
     name: Super Admin
     email: admin@marketgo.com
-    password: changeme123
+    password: adminpassword
 # AWS S3
 aws:
   s3:

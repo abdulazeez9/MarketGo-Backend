@@ -8,11 +8,14 @@ import com.marketgo.user.model.dto.response.UserResponse;
 import com.marketgo.user.model.entity.User;
 import com.marketgo.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -21,6 +24,13 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+
+
+    // Get all users (Admin)
+    public Page<UserResponse> getAllUsers(Pageable pageable) {
+        return userRepository.findAllByDeletedAtIsNull(pageable)
+                .map(userMapper::toUserResponse);
+    }
 
     // Get current user profile
     public UserResponse getById(String userId) {
@@ -50,12 +60,7 @@ public class UserService {
     ;
 
 
-    // Get all users (Admin)
-    public List<UserResponse> getAllUsers() {
-        return userRepository.findAllByDeletedAtIsNull().stream()
-                .map(userMapper::toUserResponse)
-                .toList();
-    }
+
 
     // Private method to find userID
     private User findActiveUserById(String userId) {

@@ -1,6 +1,7 @@
 package com.marketgo.user.repository;
 
 import com.marketgo.user.model.entity.User;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -18,5 +19,5 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     Optional<User> findByEmailAndDeletedAtIsNull(String email);
 
-    List<User> findAllByDeletedAtIsNull();
+    Page<User> findAllByDeletedAtIsNull(Pageable pageable);
 }
