@@ -7,6 +7,7 @@ import com.marketgo.user.model.dto.request.UpdateProfileRequest;
 import com.marketgo.user.model.dto.response.UserResponse;
 import com.marketgo.user.model.entity.User;
 import com.marketgo.user.repository.UserRepository;
+import com.marketgo.wallet.model.entity.Wallet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,7 @@ public class UserService {
     // Get current user profile
     public UserResponse getById(String userId) {
         User user = findActiveUserById(userId);
+        Wallet wallet = user.getWallet();
         return userMapper.toUserResponse(user);
     }
 

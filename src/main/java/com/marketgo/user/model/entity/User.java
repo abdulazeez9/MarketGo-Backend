@@ -1,6 +1,7 @@
 package com.marketgo.user.model.entity;
 
 import com.marketgo.common.entity.BaseEntity;
+import com.marketgo.wallet.model.entity.Wallet;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -36,6 +37,9 @@ public class User extends BaseEntity implements UserDetails {
     @Builder.Default
     private boolean verified = false;
 
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    private Wallet wallet;
+
     public enum Role {
         ADMIN, USER
     }
@@ -53,14 +57,22 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     @Override
-    public boolean isAccountNonExpired() { return true; }
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
     @Override
-    public boolean isAccountNonLocked() { return true; }
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
     @Override
-    public boolean isCredentialsNonExpired() { return true; }
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
 
     @Override
-    public boolean isEnabled() { return verified; }
+    public boolean isEnabled() {
+        return verified;
+    }
 }

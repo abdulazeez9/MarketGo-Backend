@@ -4,12 +4,18 @@ package com.marketgo.user.mapper;
 import com.marketgo.user.model.dto.response.AuthResponse;
 import com.marketgo.user.model.dto.response.UserResponse;
 import com.marketgo.user.model.entity.User;
+import com.marketgo.wallet.mapper.WalletMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class UserMapper {
 
+    private final WalletMapper walletMapper;
+
     public UserResponse toUserResponse(User user) {
+
         return new UserResponse(
                 user.getId(),
                 user.getName(),
@@ -17,6 +23,7 @@ public class UserMapper {
                 user.getRole().name(),
                 user.getPhone(),
                 user.isVerified(),
+                walletMapper.toWalletResponse(user.getWallet()),
                 user.getCreatedAt()
         );
     }

@@ -27,8 +27,7 @@ public class WalletService {
                 wallet.getUser().getId(),
                 wallet.getBalance(),
                 wallet.getCurrency().name(),
-                wallet.isFrozen(),
-                wallet.getCreatedAt()
+                wallet.isFrozen()
         )
                 ;
     }

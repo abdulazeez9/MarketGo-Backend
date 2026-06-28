@@ -11,6 +11,5 @@ public record WalletResponse(
         UUID userId,
         BigDecimal balance,
         String currency,
-        boolean frozen,
-        LocalDateTime createdAt) {
+        boolean frozen) {
 }
