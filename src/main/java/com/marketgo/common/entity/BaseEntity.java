@@ -5,7 +5,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 @Getter
@@ -23,22 +23,22 @@ public abstract class BaseEntity implements Serializable {
     protected UUID id;
 
     @Column(name = "created_at", updatable = false)
-    protected LocalDateTime createdAt;
+    protected Instant createdAt;
 
     @Column(name = "updated_at")
-    protected LocalDateTime updatedAt;
+    protected Instant updatedAt;
 
     @Column(name = "deleted_at")
-    protected LocalDateTime deletedAt;
+    protected Instant deletedAt;
 
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now();
+        createdAt = Instant.now();
         updatedAt = createdAt;
     }
 
     @PreUpdate
     protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
+        updatedAt = Instant.now();
     }
 }

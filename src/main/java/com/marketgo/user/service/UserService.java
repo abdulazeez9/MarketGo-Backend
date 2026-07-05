@@ -12,11 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import java.time.Instant;
 import java.util.UUID;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -30,14 +27,14 @@ public class UserService {
     // Get all users (Admin)
     public Page<UserResponse> getAllUsers(Pageable pageable) {
         return userRepository.findAllByDeletedAtIsNull(pageable)
-                .map(userMapper::toUserResponse);
+                .map(user -> userMapper.toUserResponse(user, user.getWallet()));
     }
 
     // Get current user profile
     public UserResponse getById(String userId) {
         User user = findActiveUserById(userId);
         Wallet wallet = user.getWallet();
-        return userMapper.toUserResponse(user);
+        return userMapper.toUserResponse(user, wallet);
     }
 
     // Update profile
@@ -47,7 +44,7 @@ public class UserService {
         if (request.phone() != null) user.setPhone(request.phone());
 
         User updated = userRepository.save(user);
-        return userMapper.toUserResponse(updated);
+        return userMapper.toUserResponse(updated, updated.getWallet());
     }
 
     ;
@@ -55,7 +52,7 @@ public class UserService {
     //Soft delete
     public void softDelete(String userId) {
         User user = findActiveUserById(userId);
-        user.setDeletedAt(LocalDateTime.now());
+        user.setDeletedAt(Instant.now());
         userRepository.save(user);
     }
 

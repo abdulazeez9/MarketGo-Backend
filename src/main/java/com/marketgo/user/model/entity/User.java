@@ -29,7 +29,8 @@ public class User extends BaseEntity implements UserDetails {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    @Builder.Default
+    private Role role = Role.BUYER;
 
     private String phone;
 
@@ -41,7 +42,7 @@ public class User extends BaseEntity implements UserDetails {
     private Wallet wallet;
 
     public enum Role {
-        ADMIN, USER
+        ADMIN, BUYER, SELLER, RUNNER
     }
 
     // --- UserDetails methods ---

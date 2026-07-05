@@ -3,7 +3,7 @@ package com.marketgo.product.model.entity;
 
 import com.marketgo.common.entity.BaseEntity;
 
-import com.marketgo.profile.buyer.model.entity.BuyerProfile;
+import com.marketgo.profile.model.entity.buyer.BuyerProfile;
 import jakarta.persistence.*;
 import lombok.*;
 
