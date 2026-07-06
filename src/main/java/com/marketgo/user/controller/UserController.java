@@ -5,10 +5,13 @@ import com.marketgo.user.model.dto.response.UserResponse;
 import com.marketgo.user.model.entity.User;
 import com.marketgo.user.service.UserService;
 import com.marketgo.utils.ApiResponse;
+import com.marketgo.utils.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/users")
@@ -19,7 +22,7 @@ public class UserController {
 
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<UserResponse>> getMe(Authentication auth) {
-        String userId = (String) auth.getPrincipal();
+        UUID userId = AuthUtils.getCurrentUserId(auth);
         UserResponse data = userService.getById(userId);
         return ResponseEntity.ok(ApiResponse.success("Profile fetched", data));
     }
@@ -30,7 +33,7 @@ public class UserController {
             Authentication auth,
             @RequestBody UpdateProfileRequest request
     ) {
-        String userId = (String) auth.getPrincipal();
+        UUID userId = AuthUtils.getCurrentUserId(auth);
         UserResponse data = userService.updateProfile(userId, request);
         return ResponseEntity.ok(ApiResponse.success("Profile updated", data));
     }
@@ -38,7 +41,7 @@ public class UserController {
     // DELETE /api/users/me — soft delete
     @DeleteMapping("/me")
     public ResponseEntity<ApiResponse<Void>> deleteMe(Authentication auth) {
-        String userId = (String) auth.getPrincipal();
+        UUID userId = AuthUtils.getCurrentUserId(auth);
         if(auth.getPrincipal().equals("admin")) {
 
         userService.softDelete(userId);

@@ -4,6 +4,7 @@ import com.marketgo.profile.model.dto.request.buyer.BuyerProfileUpdateRequest;
 import com.marketgo.profile.model.dto.response.buyer.BuyerProfileResponse;
 import com.marketgo.profile.service.BuyerProfileService;
 import com.marketgo.utils.ApiResponse;
+import com.marketgo.utils.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,8 +23,8 @@ public class BuyerProfileController {
 
     // GET the logged-in buyer's own profile
     @GetMapping("/me")
-    public ResponseEntity<ApiResponse<BuyerProfileResponse>> getMyProfile(Authentication authentication) {
-        UUID userId = extractUserId(authentication);
+    public ResponseEntity<ApiResponse<BuyerProfileResponse>> getMyProfile(Authentication auth) {
+        UUID userId = AuthUtils.getCurrentUserId(auth);
         BuyerProfileResponse data = buyerProfileService.getByUserId(userId);
         return ResponseEntity.ok(ApiResponse.success("Profile fetched", data));
     }
@@ -31,16 +32,12 @@ public class BuyerProfileController {
     // UPDATE the logged-in buyer's own profile
     @PutMapping("/me")
     public ResponseEntity<ApiResponse<BuyerProfileResponse>> updateMyProfile(
-            Authentication authentication,
+            Authentication auth,
             @RequestBody BuyerProfileUpdateRequest request) {
-        UUID userId = extractUserId(authentication);
+        UUID userId = AuthUtils.getCurrentUserId(auth);
         BuyerProfileResponse data = buyerProfileService.updateRequest(userId, request);
         return ResponseEntity.ok(ApiResponse.success("Profile updated", data));
     }
 
-    private UUID extractUserId(Authentication authentication) {
-        // Replace this with however your JWT principal actually exposes the user id
-        // e.g. ((CustomUserDetails) authentication.getPrincipal()).getId()
-        return UUID.fromString(authentication.getName());
-    }
+
 }

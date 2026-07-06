@@ -10,8 +10,7 @@ public record Pagination<T>(
         int page,
         int size,
         long totalElements,
-        int totalPages,
-        boolean last
+        int totalPages
 ) {
     public static <T> Pagination<T> from(Page<T> page) {
         return new Pagination<>(
@@ -19,8 +18,7 @@ public record Pagination<T>(
                 page.getNumber(),
                 page.getSize(),
                 page.getTotalElements(),
-                page.getTotalPages(),
-                page.isLast()
+                page.getTotalPages()
         );
     }
 }

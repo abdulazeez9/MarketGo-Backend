@@ -4,12 +4,15 @@ import com.marketgo.common.entity.Pagination;
 import com.marketgo.user.model.dto.response.UserResponse;
 import com.marketgo.user.service.UserService;
 import com.marketgo.utils.ApiResponse;
+import com.marketgo.utils.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/admin")
@@ -29,13 +32,13 @@ public class AdminController {
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<ApiResponse<UserResponse>> getUserById(@PathVariable String id) {
+    public ResponseEntity<ApiResponse<UserResponse>> getUserById(@PathVariable UUID id) {
         return ResponseEntity.ok(ApiResponse.success("User fetched", userService.getById(id)));
     }
 
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable String id, Authentication auth) {
-        String adminId = (String) auth.getPrincipal();
+    public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable UUID id, Authentication auth) {
+        UUID adminId = AuthUtils.getCurrentUserId(auth);
         if (adminId.equals(id)) {
             return ResponseEntity.badRequest().body(ApiResponse.error("Admin cannot delete their own account"));
         }

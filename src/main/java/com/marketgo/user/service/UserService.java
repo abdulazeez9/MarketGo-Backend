@@ -31,14 +31,14 @@ public class UserService {
     }
 
     // Get current user profile
-    public UserResponse getById(String userId) {
+    public UserResponse getById(UUID userId) {
         User user = findActiveUserById(userId);
         Wallet wallet = user.getWallet();
         return userMapper.toUserResponse(user, wallet);
     }
 
     // Update profile
-    public UserResponse updateProfile(String userId, UpdateProfileRequest request) {
+    public UserResponse updateProfile(UUID userId, UpdateProfileRequest request) {
         User user = findActiveUserById(userId);
         if (request.name() != null) user.setName(request.name());
         if (request.phone() != null) user.setPhone(request.phone());
@@ -50,7 +50,7 @@ public class UserService {
     ;
 
     //Soft delete
-    public void softDelete(String userId) {
+    public void softDelete(UUID userId) {
         User user = findActiveUserById(userId);
         user.setDeletedAt(Instant.now());
         userRepository.save(user);
@@ -59,8 +59,9 @@ public class UserService {
     ;
 
     // Private method to find userID
-    private User findActiveUserById(String userId) {
-        return userRepository.findByIdAndDeletedAtIsNull(UUID.fromString(userId)).orElseThrow(() -> AppException.notFound("User not found!"));
+    private User findActiveUserById(UUID userId) {
+        return userRepository.findByIdAndDeletedAtIsNull(userId)
+                .orElseThrow(() -> AppException.notFound("User not found!"));
     }
 
 }

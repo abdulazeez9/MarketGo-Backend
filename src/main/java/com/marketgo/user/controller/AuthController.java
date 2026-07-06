@@ -1,6 +1,7 @@
 package com.marketgo.user.controller;
 
 
+import com.marketgo.exception.AppException;
 import com.marketgo.user.model.dto.response.AuthResponse;
 import com.marketgo.user.model.dto.request.LoginRequest;
 import com.marketgo.user.model.dto.request.RegisterRequest;
@@ -41,17 +42,16 @@ public class AuthController {
 
 
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(@RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
-        // Extract token from "Bearer <token>" header
+    public ResponseEntity<ApiResponse<Void>> logout(@RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
         String token = extractTokenFromHeader(authHeader);
         authService.logout(token);
-        return ResponseEntity.ok("Successfully logged out");
+        return ResponseEntity.ok(ApiResponse.success("Successfully logged out"));
     }
 
     private String extractTokenFromHeader(String authHeader) {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             return authHeader.substring(7);
         }
-        throw new IllegalArgumentException("Invalid authorization header");
+        throw AppException.badRequest("Invalid authorization header");
     }
 };
