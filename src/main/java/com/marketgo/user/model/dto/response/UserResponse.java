@@ -12,7 +12,7 @@ public record UserResponse(
         String role,
         String phone,
         boolean verified,
-        WalletResponse wallet,
+
         Instant createdAt
 ) {
 }

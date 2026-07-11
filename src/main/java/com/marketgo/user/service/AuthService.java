@@ -103,7 +103,7 @@ public class AuthService {
 
             wallet.setBalance(BigDecimal.ZERO);
             walletRepository.save(wallet);
-            return userMapper.toUserResponse(restoredUser, wallet);
+            return userMapper.toUserResponse(restoredUser);
 
         }
 
@@ -127,7 +127,7 @@ public class AuthService {
        Wallet wallet = walletRepository.save(Wallet.builder().user(saved).balance(BigDecimal.ZERO).build());
 
 
-        return userMapper.toUserResponse(saved, wallet);
+        return userMapper.toUserResponse(saved);
     }
 
 

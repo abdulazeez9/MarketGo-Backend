@@ -7,7 +7,6 @@ import com.marketgo.user.model.dto.request.UpdateProfileRequest;
 import com.marketgo.user.model.dto.response.UserResponse;
 import com.marketgo.user.model.entity.User;
 import com.marketgo.user.repository.UserRepository;
-import com.marketgo.wallet.model.entity.Wallet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -27,14 +26,13 @@ public class UserService {
     // Get all users (Admin)
     public Page<UserResponse> getAllUsers(Pageable pageable) {
         return userRepository.findAllByDeletedAtIsNull(pageable)
-                .map(user -> userMapper.toUserResponse(user, user.getWallet()));
+                .map(userMapper::toUserResponse);
     }
 
     // Get current user profile
     public UserResponse getById(UUID userId) {
         User user = findActiveUserById(userId);
-        Wallet wallet = user.getWallet();
-        return userMapper.toUserResponse(user, wallet);
+        return userMapper.toUserResponse(user);
     }
 
     // Update profile
@@ -44,7 +42,7 @@ public class UserService {
         if (request.phone() != null) user.setPhone(request.phone());
 
         User updated = userRepository.save(user);
-        return userMapper.toUserResponse(updated, updated.getWallet());
+        return userMapper.toUserResponse(updated);
     }
 
     ;

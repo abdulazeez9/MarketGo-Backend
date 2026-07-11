@@ -1,6 +1,7 @@
 package com.marketgo.user.service;
 
 import com.marketgo.exception.AppException;
+import com.marketgo.profile.repository.BuyerProfileRepository;
 import com.marketgo.user.model.dto.request.AddressRequest;
 import com.marketgo.user.model.dto.response.AddressResponse;
 import com.marketgo.user.model.entity.Address;
@@ -9,6 +10,7 @@ import com.marketgo.user.repository.AddressRepository;
 import com.marketgo.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,6 +21,7 @@ public class AddressService {
 
     private final AddressRepository addressRepository;
     private final UserRepository userRepository;
+    private final BuyerProfileRepository bupRepository;
 
     //Get my Addresses
     public List<AddressResponse> getMyAddresses(UUID userId) {
@@ -27,9 +30,22 @@ public class AddressService {
     }
 
     // Create new address
+    @Transactional
     public AddressResponse createAddress(UUID userId, AddressRequest request) {
         User user = userRepository.findByIdAndDeletedAtIsNull(userId)
                 .orElseThrow(() -> AppException.notFound("User not found"));
+
+        boolean hasNoAddresses = addressRepository.findAllByUserId(userId).isEmpty();
+        boolean shouldBeDefault = hasNoAddresses || request.isDefault();
+
+        if (shouldBeDefault) {
+            addressRepository.findByUserIdAndIsDefaultTrue(userId)
+                    .ifPresent(existing -> {
+                        existing.setDefault(false);
+                        addressRepository.save(existing);
+                    });
+        }
+
         Address address = Address.builder()
                 .user(user)
                 .label(request.label())
@@ -38,10 +54,20 @@ public class AddressService {
                 .state(request.state())
                 .lat(request.lat())
                 .lon(request.lon())
-                .isDefault(false)
+                .isDefault(shouldBeDefault)
                 .build();
 
-        return toResponse(addressRepository.save(address));
+        Address saved = addressRepository.save(address);
+
+        if (shouldBeDefault) {
+            bupRepository.findByUserId(userId)
+                    .ifPresent(profile -> {
+                        profile.setDefaultAddress(saved);
+                        bupRepository.save(profile);
+                    });
+        }
+
+        return toResponse(saved);
     }
 
     // Update request
