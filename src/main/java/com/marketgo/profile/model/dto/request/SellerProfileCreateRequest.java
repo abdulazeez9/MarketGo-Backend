@@ -1,4 +1,4 @@
-package com.marketgo.profile.model.dto.request.seller;
+package com.marketgo.profile.model.dto.request;
 
 import java.util.UUID;
 

@@ -1,8 +1,8 @@
 package com.marketgo.order.model.entity;
 
 import com.marketgo.common.entity.BaseEntity;
-import com.marketgo.profile.model.entity.buyer.BuyerProfile;
-import com.marketgo.profile.model.entity.runner.RunnerProfile;
+import com.marketgo.profile.model.entity.BuyerProfile;
+import com.marketgo.profile.model.entity.RunnerProfile;
 import com.marketgo.user.model.entity.Address;
 import jakarta.persistence.*;
 import lombok.*;

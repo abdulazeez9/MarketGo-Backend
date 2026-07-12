@@ -1,6 +1,6 @@
-package com.marketgo.profile.model.dto.request.runner;
+package com.marketgo.profile.model.dto.request;
 
-import com.marketgo.profile.model.entity.runner.RunnerProfile;
+import com.marketgo.profile.model.entity.RunnerProfile;
 
 import java.util.UUID;
 

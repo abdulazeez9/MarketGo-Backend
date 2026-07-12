@@ -1,6 +1,6 @@
-package com.marketgo.profile.model.dto.response.runner;
+package com.marketgo.profile.model.dto.response;
 
-import com.marketgo.profile.model.entity.runner.RunnerProfile;
+import com.marketgo.profile.model.entity.RunnerProfile;
 
 import java.math.BigDecimal;
 import java.time.Instant;

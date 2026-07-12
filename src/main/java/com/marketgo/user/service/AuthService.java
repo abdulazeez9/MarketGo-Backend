@@ -2,7 +2,7 @@ package com.marketgo.user.service;
 
 
 import com.marketgo.exception.AppException;
-import com.marketgo.profile.model.entity.buyer.BuyerProfile;
+import com.marketgo.profile.model.entity.BuyerProfile;
 import com.marketgo.profile.repository.BuyerProfileRepository;
 import com.marketgo.profile.repository.RunnerProfileRepository;
 import com.marketgo.profile.repository.SellerProfileRepository;

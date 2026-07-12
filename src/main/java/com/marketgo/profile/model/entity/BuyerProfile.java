@@ -1,4 +1,4 @@
-package com.marketgo.profile.model.entity.buyer;
+package com.marketgo.profile.model.entity;
 
 import com.marketgo.common.entity.BaseEntity;
 import com.marketgo.user.model.entity.Address;

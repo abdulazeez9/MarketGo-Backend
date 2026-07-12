@@ -1,7 +1,7 @@
-package com.marketgo.profile.controller.buyer;
+package com.marketgo.profile.controller;
 
-import com.marketgo.profile.model.dto.request.buyer.BuyerProfileUpdateRequest;
-import com.marketgo.profile.model.dto.response.buyer.BuyerProfileResponse;
+import com.marketgo.profile.model.dto.request.BuyerProfileUpdateRequest;
+import com.marketgo.profile.model.dto.response.BuyerProfileResponse;
 import com.marketgo.profile.service.BuyerProfileService;
 import com.marketgo.utils.ApiResponse;
 import com.marketgo.utils.AuthUtils;

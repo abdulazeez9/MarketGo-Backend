@@ -1,4 +1,4 @@
-package com.marketgo.profile.model.dto.response.seller;
+package com.marketgo.profile.model.dto.response;
 
 import java.math.BigDecimal;
 import java.time.Instant;

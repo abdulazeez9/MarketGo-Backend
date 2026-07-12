@@ -1,4 +1,4 @@
-package com.marketgo.profile.controller.runner;
+package com.marketgo.profile.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;

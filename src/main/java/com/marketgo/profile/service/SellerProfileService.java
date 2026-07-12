@@ -2,10 +2,10 @@ package com.marketgo.profile.service;
 
 
 import com.marketgo.exception.AppException;
-import com.marketgo.profile.model.dto.request.seller.SellerProfileCreateRequest;
-import com.marketgo.profile.model.dto.request.seller.SellerProfileUpdateRequest;
-import com.marketgo.profile.model.dto.response.seller.SellerProfileResponse;
-import com.marketgo.profile.model.entity.seller.SellerProfile;
+import com.marketgo.profile.model.dto.request.SellerProfileCreateRequest;
+import com.marketgo.profile.model.dto.request.SellerProfileUpdateRequest;
+import com.marketgo.profile.model.dto.response.SellerProfileResponse;
+import com.marketgo.profile.model.entity.SellerProfile;
 import com.marketgo.profile.repository.SellerProfileRepository;
 import com.marketgo.user.model.entity.Address;
 import com.marketgo.user.model.entity.User;

@@ -1,4 +1,4 @@
-package com.marketgo.profile.model.dto.request.runner;
+package com.marketgo.profile.model.dto.request;
 
 import java.math.BigDecimal;
 

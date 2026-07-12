@@ -1,9 +1,9 @@
 package com.marketgo.profile.service;
 
 import com.marketgo.exception.AppException;
-import com.marketgo.profile.model.dto.request.buyer.BuyerProfileUpdateRequest;
-import com.marketgo.profile.model.dto.response.buyer.BuyerProfileResponse;
-import com.marketgo.profile.model.entity.buyer.BuyerProfile;
+import com.marketgo.profile.model.dto.request.BuyerProfileUpdateRequest;
+import com.marketgo.profile.model.dto.response.BuyerProfileResponse;
+import com.marketgo.profile.model.entity.BuyerProfile;
 import com.marketgo.profile.repository.BuyerProfileRepository;
 import com.marketgo.user.model.entity.Address;
 import com.marketgo.user.repository.AddressRepository;

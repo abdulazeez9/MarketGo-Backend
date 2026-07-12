@@ -2,10 +2,10 @@ package com.marketgo.profile.service;
 
 
 import com.marketgo.exception.AppException;
-import com.marketgo.profile.model.dto.request.runner.RunnerLocationUpdateRequest;
-import com.marketgo.profile.model.dto.request.runner.RunnerProfileCreateRequest;
-import com.marketgo.profile.model.dto.response.runner.RunnerProfileResponse;
-import com.marketgo.profile.model.entity.runner.RunnerProfile;
+import com.marketgo.profile.model.dto.request.RunnerLocationUpdateRequest;
+import com.marketgo.profile.model.dto.request.RunnerProfileCreateRequest;
+import com.marketgo.profile.model.dto.response.RunnerProfileResponse;
+import com.marketgo.profile.model.entity.RunnerProfile;
 import com.marketgo.profile.repository.RunnerProfileRepository;
 import com.marketgo.user.model.entity.User;
 import com.marketgo.user.repository.UserRepository;
